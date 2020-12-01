@@ -90,12 +90,21 @@ class Canvas(QWidget):
         # self.feedback is the feedback path to animate
         # Weight should be within [0,1]
         # self.feedback = interpolate(x1, y1, x2, x2, weight)
-        self.feedback = QPolygonF()
-        for (p1,p2) in zip(self.termination,self.path):
-            p = interpolate(p1.x(),p1.y(),p2.x(),p2.y(),0.5)
-            self.feedback.append(QPointF(p[0],p[1]))
-        self.counter += 1
-        self.repaint()
+        if self.counter == 0:
+            self.feedback = QPolygonF(self.path)
+            
+        if nb_step > self.counter:
+            print(self.counter)
+            newFeed = QPolygonF()
+            for (p1,p2) in zip(self.termination,self.feedback):
+                p = interpolate(p2.x(),p2.y(),p1.x(),p1.y(),0.08)
+                newFeed.append(QPointF(p[0],p[1]))
+            self.feedback = newFeed
+            self.counter += 1
+            self.repaint()
+        else:
+            self.timer.stop()
+            self.animation = False
 
 
     ############################
@@ -150,13 +159,17 @@ class Canvas(QWidget):
         
         #todo 11
         #self.path = ...
-        self.path = points_to_qpolygonF(self.oneDollar.resample(qpolygonF_to_points(self.path),pathLength(qpolygonF_to_points(self.termination))))
-        # self.feedback = 
+        self.path = points_to_qpolygonF(
+            self.oneDollar.resample(
+                qpolygonF_to_points(self.path),
+                128
+            )
+        )
+        self.feedback = self.path
 
         #create a timer
         self.counter = 0
-        self.timer.start()
-        self.timer.setInterval(2)
+        self.timer.start(25)
 
 
     ##############################

@@ -44,7 +44,7 @@ class OneDollar(object):
                 template_id = idt
                 label = self.labels[idt]
         # Formule : 1 - (b/0.5)*sqrt(2* self.square_size**2)
-        score = 1 -( b /( 0.5 * math.sqrt(2 * (self.square_size**2))) )
+        score = 1 - (b / ( 0.5 * math.sqrt(2 * (self.square_size ** 2))))
         return template_id, label, score
 
 
@@ -72,7 +72,6 @@ class OneDollar(object):
                 x_2 = (1 - phi) * angle_a + (phi * angle_b)
                 f_2 = self.distanceAtAngle(points, template, x_2)
 
-        return min(f_1, f_2)
         return min(f_1, f_2)
 
     ####################
@@ -151,8 +150,8 @@ class OneDollar(object):
         centroid = np.mean(points, 0)
         q = np.zeros(2)
         for p in points:
-            q[0] = (p[0]-centroid[0])*np.cos(angle)-(p[1]-centroid[1])*np.sin(angle)+centroid[0]
-            q[1] = (p[0]-centroid[0])*np.sin(angle)-(p[1]-centroid[1])*np.cos(angle)+centroid[1]
+            q[0] = ((p[0] - centroid[0]) * np.cos(angle)) - ((p[1] - centroid[1]) * np.sin(angle)) + centroid[0]
+            q[1] = ((p[0] - centroid[0]) * np.sin(angle)) + ((p[1] - centroid[1]) * np.cos(angle)) + centroid[1]
             newPoints = np.concatenate((newPoints,[q]))
         newPoints = newPoints[1:]       #remove the first point [0,0]
         return newPoints
