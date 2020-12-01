@@ -51,7 +51,7 @@ class MainWindow(QMainWindow):
         ################################
         # TODO 9: connect the signal and the slot
         ###############################
-
+        self.canvas.selected_template.connect(self.set_action_on_gesture)
 
         ################################
         # TODO 3: fill the template gallery
@@ -114,6 +114,7 @@ class MainWindow(QMainWindow):
         self.textEdit.setPlainText( message+  "\n" + self.textEdit.toPlainText() )
 
         #todo 9 select the corresponding element in the galery
+        QListWidget.setCurrentRow(self.gallery,id)
 
     ##############
     def open(self):

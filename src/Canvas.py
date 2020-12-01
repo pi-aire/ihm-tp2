@@ -1,7 +1,8 @@
+import PyQt5
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from onedollar import OneDollar
+from onedollar import OneDollar, pathDistance, pathLength
 import numpy as np
 
 
@@ -29,7 +30,7 @@ class Canvas(QWidget):
     ##########################
     # TODO 9: create a selected_template signal with three parameters: label, template_id, score
     ##########################
-
+    selected_template = pyqtSignal('QString', int, float, name='selected_template')
 
     def __init__(self, parent = None):
         QWidget.__init__(self, parent)
@@ -46,8 +47,8 @@ class Canvas(QWidget):
         # TODO 11 create a timer
         # connect the timer to the sole timout
         #############################
-
-
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.timeout)
 
 
     ##############################
@@ -89,8 +90,10 @@ class Canvas(QWidget):
         # self.feedback is the feedback path to animate
         # Weight should be within [0,1]
         # self.feedback = interpolate(x1, y1, x2, x2, weight)
-
-
+        self.feedback = QPolygonF()
+        for (p1,p2) in zip(self.termination,self.path):
+            p = interpolate(p1.x(),p1.y(),p2.x(),p2.y(),0.5)
+            self.feedback.append(QPointF(p[0],p[1]))
         self.counter += 1
         self.repaint()
 
@@ -143,13 +146,17 @@ class Canvas(QWidget):
 
         #todo 10
         #self.termination = ...
-
+        self.termination = self.get_feedback(template_id)
+        
         #todo 11
         #self.path = ...
-        #self.feedback = self.path
+        self.path = points_to_qpolygonF(self.oneDollar.resample(qpolygonF_to_points(self.path),pathLength(qpolygonF_to_points(self.termination))))
+        # self.feedback = 
 
         #create a timer
         self.counter = 0
+        self.timer.start()
+        self.timer.setInterval(2)
 
 
     ##############################
@@ -159,7 +166,7 @@ class Canvas(QWidget):
         print("template id: ", template_id, " label: ", label, " score: ", score)
 
         if score > 0.5:
-            #self.selected_template.emit(label, template_id, score)
+            self.selected_template.emit(label, template_id, score)
             self.display_feedback(template_id)
 
 

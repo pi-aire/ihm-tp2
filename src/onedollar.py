@@ -34,10 +34,11 @@ class OneDollar(object):
         new_points = self.rotateToZero(new_points)
         new_points = self.scaleToSquare(new_points)
         new_points = self.translateToOrigin(new_points)
+        self.resampled_gesture = self.resample(points, numPoints)
         # recognition
         b = np.PINF
         for idt in range(len(self.templates)):
-            d = self.distanceAtBestAngle(new_points,self.templates[idt],-self.angle_range, self.angle_range,self.angle_step)
+            d = self.distanceAtBestAngle(new_points,self.templates[idt],-1 * (self.angle_range), self.angle_range,self.angle_step)
             if d < b:
                 b = d
                 template_id = idt
