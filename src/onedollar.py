@@ -135,11 +135,8 @@ class OneDollar(object):
     #########################################
     def rotateToZero(self, points):
         centroid = np.mean(points, 0)
-        newPoints = points      #remove this line, it is just for compilation
         angle = np.arctan2(centroid[1] - points[0][1], centroid[0] - points[0][0])
-        #todo
-        newPoints = self.rotateBy(points, -1 * angle)
-        return newPoints
+        return self.rotateBy(points, -1 * angle)
 
     #########################################
     # TODO 6
@@ -163,7 +160,7 @@ class OneDollar(object):
     def scaleToSquare(self, points):
         newPoints = np.zeros((1, 2))    #initialize with a first point [0,0]
         #todo 7
-        B = np.array([np.amin(points),np.amax(points)])
+        B = np.amax(points,0) - np.amin(points,0)
         q = np.zeros(2)
         for p in points:
             q[0] = p[0] * (self.square_size/B[0])

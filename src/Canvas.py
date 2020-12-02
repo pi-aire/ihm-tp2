@@ -94,7 +94,6 @@ class Canvas(QWidget):
             self.feedback = QPolygonF(self.path)
             
         if nb_step > self.counter:
-            print(self.counter)
             newFeed = QPolygonF()
             for (p1,p2) in zip(self.termination,self.feedback):
                 p = interpolate(p2.x(),p2.y(),p1.x(),p1.y(),0.08)
@@ -165,7 +164,6 @@ class Canvas(QWidget):
                 128
             )
         )
-        self.feedback = self.path
 
         #create a timer
         self.counter = 0
