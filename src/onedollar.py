@@ -43,7 +43,6 @@ class OneDollar(object):
                 b = d
                 template_id = idt
                 label = self.labels[idt]
-        # Formule : 1 - (b/0.5)*sqrt(2* self.square_size**2)
         score = 1 - (b / ( 0.5 * math.sqrt(2 * (self.square_size ** 2))))
         return template_id, label, score
 
@@ -106,7 +105,7 @@ class OneDollar(object):
                 D += d
             i += 1
         if len(newPoints) == n - 1:  # Fix a possible roundoff error
-            newPoints.append(points[0])
+            newPoints.append(points[len(points)-1])
         return newPoints
 
     ####################

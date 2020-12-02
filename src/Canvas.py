@@ -9,7 +9,7 @@ import numpy as np
 def points_to_qpolygonF(points):
     polygon = QPolygonF()
     for elem in points:
-        polygon.append( QPoint(elem[0], elem[1]) )
+        polygon.append( QPointF(elem[0], elem[1]) )
     return polygon
 
 def qpolygonF_to_points(polygon):
@@ -92,7 +92,6 @@ class Canvas(QWidget):
         # self.feedback = interpolate(x1, y1, x2, x2, weight)
         if self.counter == 0:
             self.feedback = QPolygonF(self.path)
-            
         if nb_step > self.counter:
             newFeed = QPolygonF()
             for (p1,p2) in zip(self.termination,self.feedback):
@@ -164,7 +163,6 @@ class Canvas(QWidget):
                 128
             )
         )
-
         #create a timer
         self.counter = 0
         self.timer.start(25)
